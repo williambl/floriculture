@@ -4,6 +4,7 @@
   "package": "com.williambl.floriculture.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "FlowerBlockMixin"
   ],
   "client": [
   ],
