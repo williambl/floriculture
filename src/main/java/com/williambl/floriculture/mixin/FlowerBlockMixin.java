@@ -1,5 +1,6 @@
 package com.williambl.floriculture.mixin;
 
+import com.williambl.floriculture.Floriculture;
 import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -26,7 +27,7 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         super.scheduledTick(state, world, pos, random);
-        if (world.getBlockState(pos.offset(Direction.DOWN)).getBlock() == Blocks.FARMLAND) {
+        if (Floriculture.FLOWERS_CAN_SPREAD_ON.contains(world.getBlockState(pos.offset(Direction.DOWN)).getBlock()) && world.getLightLevel(pos) >= 14) {
             spread(state, world, pos, random);
         }
     }
