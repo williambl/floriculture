@@ -49,7 +49,7 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
 
         BlockPos spreadPos = pos.add(random.nextInt(4) - 2, random.nextInt(2) - 1, random.nextInt(4) - 2);
 
-        if (world.isAir(spreadPos) && state.canPlaceAt(world, spreadPos)) {
+        if (world.isAir(spreadPos) && state.canPlaceAt(world, spreadPos) && Floriculture.FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(pos.down()).getBlock())) {
             world.setBlockState(spreadPos, state, 2);
         }
     }
