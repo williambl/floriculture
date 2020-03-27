@@ -9,7 +9,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 
-import java.util.Iterator;
 import java.util.Random;
 
 @Mixin(FlowerBlock.class)
@@ -27,7 +26,7 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         super.scheduledTick(state, world, pos, random);
-        if (Floriculture.FLOWERS_CAN_SPREAD_ON.contains(world.getBlockState(pos.offset(Direction.DOWN)).getBlock()) && world.getLightLevel(pos) >= 14) {
+        if (Floriculture.FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(pos.offset(Direction.DOWN)).getBlock()) && world.getLightLevel(pos) >= 14) {
             spread(state, world, pos, random);
         }
     }
@@ -53,7 +52,7 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
 
     @Override
     public boolean isFertilizable(BlockView world, BlockPos pos, BlockState state, boolean isClient) {
-        return true;
+        return !Floriculture.FLOWER_SPREAD_DISALLOWED.contains(world.getBlockState(pos.down()).getBlock());
     }
 
     @Override

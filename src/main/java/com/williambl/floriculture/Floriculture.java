@@ -11,7 +11,8 @@ public class Floriculture implements ModInitializer {
 
 	private static final String MODID = "floriculture";
 
-	public static final Tag<Block> FLOWERS_CAN_SPREAD_ON = TagRegistry.block(new Identifier(MODID, "flowers_can_spread_on"));
+	public static final Tag<Block> FLOWER_SPREAD_ALLOWED = TagRegistry.block(new Identifier(MODID, "flower_spread_allowed"));
+	public static final Tag<Block> FLOWER_SPREAD_DISALLOWED = TagRegistry.block(new Identifier(MODID, "flower_spread_disallowed"));
 
 	@Override
 	public void onInitialize() {
