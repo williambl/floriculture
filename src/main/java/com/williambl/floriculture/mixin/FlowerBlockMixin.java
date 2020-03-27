@@ -38,7 +38,7 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
     protected void spread(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         int flowersAround = 5+random.nextInt(2);
 
-        for (BlockPos blockPos : BlockPos.iterate(pos.add(-3, -1, -3), pos.add(3, 1, 3))) {
+        for (BlockPos blockPos : BlockPos.iterate(pos.add(-2, -1, -2), pos.add(2, 1, 2))) {
             if (world.getBlockState(blockPos).getBlock() == this) {
                 --flowersAround;
                 if (flowersAround <= 0) {
