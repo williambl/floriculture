@@ -4,13 +4,13 @@
   "version": "${version}",
 
   "name": "Floriculture",
-  "description": "Makes flowers farmable",
+  "description": "Makes flowers farmable.",
   "authors": [
     "Willbl3pic"
   ],
   "contact": {
-    "homepage": "",
-    "sources": ""
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/floriculture",
+    "sources": "https://github.com/williambl/floriculture/issues"
   },
 
   "license": "MIT",
@@ -28,10 +28,8 @@
 
   "depends": {
     "fabricloader": ">=0.7.4",
-    "fabric": "*",
     "minecraft": "1.15.x"
   },
   "suggests": {
-    "flamingo": "*"
   }
 }
