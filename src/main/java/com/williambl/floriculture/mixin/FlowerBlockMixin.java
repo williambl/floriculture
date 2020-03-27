@@ -20,13 +20,17 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
 
     @Override
     public boolean hasRandomTicks(BlockState state) {
-        return this != Blocks.WITHER_ROSE;
+        return true;
     }
 
     @Override
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         super.scheduledTick(state, world, pos, random);
-        if (Floriculture.FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(pos.offset(Direction.DOWN)).getBlock()) && world.getLightLevel(pos) >= 14) {
+        if (
+                Floriculture.FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(pos.offset(Direction.DOWN)).getBlock())
+                && !Floriculture.UNSPREADABLE_FLOWERS.contains(this)
+                && world.getLightLevel(pos) >= 1
+        ) {
             spread(state, world, pos, random);
         }
     }
@@ -52,7 +56,7 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
 
     @Override
     public boolean isFertilizable(BlockView world, BlockPos pos, BlockState state, boolean isClient) {
-        return !Floriculture.FLOWER_SPREAD_DISALLOWED.contains(world.getBlockState(pos.down()).getBlock());
+        return !(Floriculture.UNSPREADABLE_FLOWERS.contains(this) || Floriculture.FLOWER_SPREAD_DISALLOWED.contains(world.getBlockState(pos.down()).getBlock()));
     }
 
     @Override

@@ -13,6 +13,7 @@ public class Floriculture implements ModInitializer {
 
 	public static final Tag<Block> FLOWER_SPREAD_ALLOWED = TagRegistry.block(new Identifier(MODID, "flower_spread_allowed"));
 	public static final Tag<Block> FLOWER_SPREAD_DISALLOWED = TagRegistry.block(new Identifier(MODID, "flower_spread_disallowed"));
+	public static final Tag<Block> UNSPREADABLE_FLOWERS = TagRegistry.block(new Identifier(MODID, "unspreadable_flowers"));
 
 	@Override
 	public void onInitialize() {
