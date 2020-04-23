@@ -31,11 +31,11 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
                 && !Floriculture.UNSPREADABLE_FLOWERS.contains(this)
                 && world.getLightLevel(pos) >= 1
         ) {
-            spread(state, world, pos, random);
+            spread(state, world, pos, random, true);
         }
     }
 
-    protected void spread(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+    protected void spread(BlockState state, ServerWorld world, BlockPos pos, Random random, boolean allowedBlocksOnly) {
         int flowersAround = 5+random.nextInt(2);
 
         for (BlockPos blockPos : BlockPos.iterate(pos.add(-2, -1, -2), pos.add(2, 1, 2))) {
@@ -49,7 +49,7 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
 
         BlockPos spreadPos = pos.add(random.nextInt(4) - 2, random.nextInt(2) - 1, random.nextInt(4) - 2);
 
-        if (world.isAir(spreadPos) && state.canPlaceAt(world, spreadPos) && Floriculture.FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(pos.down()).getBlock())) {
+        if (world.isAir(spreadPos) && state.canPlaceAt(world, spreadPos) && (!allowedBlocksOnly || Floriculture.FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(spreadPos.down()).getBlock()))) {
             world.setBlockState(spreadPos, state, 2);
         }
     }
@@ -67,7 +67,7 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
     @Override
     public void grow(ServerWorld world, Random random, BlockPos pos, BlockState state) {
         for (int i = 0; i < 5; i++) {
-            spread(state, world, pos, random);
+            spread(state, world, pos, random, false);
         }
     }
 }
