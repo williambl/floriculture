@@ -1,8 +1,10 @@
 package com.williambl.floriculture.mixin;
 
-import com.williambl.floriculture.Floriculture;
+import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.*;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.tag.Tag;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.BlockView;
@@ -13,6 +15,12 @@ import java.util.Random;
 
 @Mixin(FlowerBlock.class)
 public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
+
+    private static final String MODID = "floriculture";
+
+    private static final Tag<Block> FLOWER_SPREAD_ALLOWED = TagRegistry.block(new Identifier(MODID, "flower_spread_allowed"));
+    private static final Tag<Block> FLOWER_SPREAD_DISALLOWED = TagRegistry.block(new Identifier(MODID, "flower_spread_disallowed"));
+    private static final Tag<Block> UNSPREADABLE_FLOWERS = TagRegistry.block(new Identifier(MODID, "unspreadable_flowers"));
 
     public FlowerBlockMixin(Settings settings) {
         super(settings);
@@ -27,8 +35,8 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
     public void scheduledTick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
         super.scheduledTick(state, world, pos, random);
         if (
-                Floriculture.FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(pos.offset(Direction.DOWN)).getBlock())
-                && !Floriculture.UNSPREADABLE_FLOWERS.contains(this)
+                FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(pos.offset(Direction.DOWN)).getBlock())
+                && !UNSPREADABLE_FLOWERS.contains(this)
                 && world.getLightLevel(pos) >= 1
         ) {
             spread(state, world, pos, random, true);
@@ -49,14 +57,14 @@ public class FlowerBlockMixin extends PlantBlock implements Fertilizable {
 
         BlockPos spreadPos = pos.add(random.nextInt(4) - 2, random.nextInt(2) - 1, random.nextInt(4) - 2);
 
-        if (world.isAir(spreadPos) && state.canPlaceAt(world, spreadPos) && (!allowedBlocksOnly || Floriculture.FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(spreadPos.down()).getBlock()))) {
+        if (world.isAir(spreadPos) && state.canPlaceAt(world, spreadPos) && (!allowedBlocksOnly || FLOWER_SPREAD_ALLOWED.contains(world.getBlockState(spreadPos.down()).getBlock()))) {
             world.setBlockState(spreadPos, state, 2);
         }
     }
 
     @Override
     public boolean isFertilizable(BlockView world, BlockPos pos, BlockState state, boolean isClient) {
-        return !(Floriculture.UNSPREADABLE_FLOWERS.contains(this) || Floriculture.FLOWER_SPREAD_DISALLOWED.contains(world.getBlockState(pos.down()).getBlock()));
+        return !(UNSPREADABLE_FLOWERS.contains(this) || FLOWER_SPREAD_DISALLOWED.contains(world.getBlockState(pos.down()).getBlock()));
     }
 
     @Override
